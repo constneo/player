@@ -2,12 +2,12 @@
 // GET: [host]/api/album
 
 import { SetStateAction, useEffect, useState } from "react"
-import request from "./api/request"
+import request from ".//utils/request"
 import { Layout, Spinner, Text } from "@ui-kitten/components"
 import { List, ListItem } from "@ui-kitten/components"
-import { Button, Platform, StyleSheet, View, TVEventHandler, useTVEventHandler } from "react-native"
-import { RemoteKeys } from "./constants"
-import { AlbumItem } from "./types"
+import { Button, StyleSheet, useTVEventHandler } from "react-native"
+import { RemoteKeys } from ".//utils/constants"
+import { AlbumItem } from ".//utils/types"
 
 // query:
 // 参数名	备注

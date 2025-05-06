@@ -1,0 +1,214 @@
+import Ionicons from "react-native-vector-icons/Ionicons"
+import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import Home from "./Home"
+import { Routes } from "./utils/constants"
+import Player, { StoreProvider } from "./Player"
+import More from "./More"
+import {
+  BottomNavigationProps,
+  Icon,
+  IconElement,
+  BottomNavigation,
+  BottomNavigationTab,
+  Text
+} from "@ui-kitten/components"
+
+import React, { useState } from "react"
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  TouchableHighlight,
+  StyleProp,
+  ViewStyle,
+  TVFocusGuideView
+} from "react-native"
+
+import { useFocusEffect, useLinkBuilder, useTheme } from "@react-navigation/native"
+import { PlatformPressable } from "@react-navigation/elements"
+
+const Tab = createBottomTabNavigator()
+
+const HomeIcon = (props: any): IconElement => {
+  return <Icon name="home-outline" {...props} />
+}
+const EmailIcon = (props: any) => <Icon name="cube-outline" {...props} />
+
+const BottomTabBar = ({ navigation, state }: BottomTabBarProps) => {
+  const { colors } = useTheme()
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      }
+    }, [])
+  )
+  {
+    console.log("state.index:", state.index)
+  }
+
+  const [focused, setFocused] = useState(0)
+  const bg = "rgba(255,255,255,.1)"
+
+  return (
+    <View focusable={true}>
+      <TVFocusGuideView autoFocus>
+        {/* <TouchableOpacity
+          activeOpacity={0.5}
+          style={{
+            backgroundColor: "#000000"
+          }}> */}
+        <Player id="10" />
+        {/* </TouchableOpacity> */}
+      </TVFocusGuideView>
+
+      <BottomNavigation
+        focusable={true}
+        selectedIndex={state.index}
+        indicatorStyle={{}}
+        onSelect={index => navigation.navigate(state.routeNames[index])}>
+        <BottomNavigationTab
+          focusable={true}
+          title="Home"
+          icon={HomeIcon}
+          style={{
+            backgroundColor: focused === 0 ? bg : "transparent"
+          }}
+          onFocus={() => {
+            console.log("index:", 0)
+
+            setFocused(0)
+          }}
+          onBlur={() => setFocused(-1)}
+        />
+
+        <BottomNavigationTab
+          focusable={true}
+          title="More"
+          icon={EmailIcon}
+          style={{
+            backgroundColor: focused === 1 ? bg : "transparent"
+          }}
+          onFocus={() => {
+            console.log("index:", 1)
+
+            setFocused(1)
+          }}
+          onBlur={() => setFocused(-1)}
+        />
+      </BottomNavigation>
+    </View>
+  )
+}
+
+function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+  const { colors } = useTheme()
+  const { buildHref } = useLinkBuilder()
+
+  return (
+    <View style={{ flexDirection: "column", height: 120 }}>
+      <TVFocusGuideView autoFocus id="10">
+        <Player />
+      </TVFocusGuideView>
+
+      <View style={{ flexDirection: "row" }}>
+        {state.routes.map((route: any, index: any) => {
+          const { options } = descriptors[route.key]
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name
+
+          const isFocused = state.index === index
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true
+            })
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params)
+            }
+          }
+
+          const onLongPress = () => {
+            navigation.emit({
+              type: "tabLongPress",
+              target: route.key
+            })
+          }
+
+          return (
+            <PlatformPressable
+              key={route.key}
+              href={buildHref(route.name, route.params)}
+              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityLabel={options.tabBarAccessibilityLabel}
+              testID={options.tabBarButtonTestID}
+              onPress={onPress}
+              onLongPress={onLongPress}
+              style={{ flex: 1 }}>
+              <Text
+                style={{
+                  color: isFocused ? colors.primary : colors.text,
+                  textAlign: "center",
+                  alignItems: "center",
+                  height: "100%",
+                  flexDirection: "column"
+                }}>
+                {label}
+              </Text>
+            </PlatformPressable>
+          )
+        })}
+      </View>
+    </View>
+  )
+}
+
+export default function () {
+  return (
+    <Tab.Navigator
+      tabBar={props => <BottomTabBar {...props} />}
+      // tabBar={props => <MyTabBar {...props} />}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }: any) => {
+          if (route.name === Routes.Home) {
+            return <Ionicons name="home-outline" size={size} color={color} />
+          } else if (route.name === Routes.More) {
+            return <Ionicons name="settings-outline" size={size} color={color} />
+          }
+
+          let iconName = "apps-outline"
+          return <Ionicons name={iconName} size={size} color={color} />
+        },
+        // tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
+        tabBarLabelPosition: "below-icon",
+        // title: route.name
+        animation: "fade"
+      })}>
+      <Tab.Screen
+        name={Routes.Home}
+        component={Home}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Tab.Screen name={Routes.More} component={More} />
+    </Tab.Navigator>
+  )
+}
+
+const styles = StyleSheet.create({
+  bottomNavigation: {
+    marginVertical: 8
+  }
+})

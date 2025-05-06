@@ -1,8 +1,8 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
-import {useStore, useUserInfo} from './store';
-import {useEffect} from 'react';
-import request from './api/request';
-import {Button, Text, TextInput, View} from 'react-native';
+import { useNavigation, useTheme } from "@react-navigation/native"
+import { useStore, useUserInfo } from "/store"
+import { useEffect } from "react"
+import request from "./api/request"
+import { Button, Text, TextInput, View } from "react-native"
 
 /*
  * To keep the template simple and small we're adding padding to prevent view
@@ -13,62 +13,59 @@ import {Button, Text, TextInput, View} from 'react-native';
  * You can read more about it here:
  * https://github.com/react-native-community/discussions-and-proposals/discussions/827
  */
-const safePadding = '5%';
+const safePadding = "5%"
 
 function Banner() {
   return (
     <View
       style={{
         height: 100,
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignContent: 'center',
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center"
       }}>
       <Text
         style={{
-          textAlign: 'center',
-          fontSize: 20,
+          textAlign: "center",
+          fontSize: 20
         }}>
         Navidrome
       </Text>
     </View>
-  );
+  )
 }
 
 export default function () {
-  const {address, setAddress, username, setUsername, password, setPassword} =
-    useStore();
-  const {userInfo, setUserInfo} = useUserInfo();
+  const { address, setAddress, username, setUsername, password, setPassword } = useStore()
+  const { userInfo, setUserInfo } = useUserInfo()
   // const {token, setToken} = useToken();
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   useEffect(() => {
     if (address) {
-      request.defaults.baseURL = address;
+      request.defaults.baseURL = address
     }
 
     if (userInfo.token) {
-      request.defaults.headers[
-        'x-nd-authorization'
-      ] = `Bearer ${userInfo.token}`;
-      request.defaults.headers['x-nd-client-unique-id'] = userInfo.id;
+      request.defaults.headers["x-nd-authorization"] = `Bearer ${userInfo.token}`
+      request.defaults.headers["x-nd-client-unique-id"] = userInfo.id
     }
-  }, [address]);
+  }, [address])
 
   return (
     <View
       style={{
-        height: '100%',
+        height: "100%",
         flex: 1,
-        alignItems: 'center',
+        alignItems: "center"
       }}>
       <Banner />
 
       <View
         style={{
           padding: safePadding,
-          width: 500,
+          width: 500
         }}>
         <Text>地址</Text>
         <TextInput
@@ -95,7 +92,7 @@ export default function () {
         <Button
           hasTVPreferredFocus={true}
           nextFocusDown={0}
-          title={'登录'}
+          title={"登录"}
           onPress={() =>
             // login({username, password})
             //   .then((res: any) => {
@@ -112,5 +109,5 @@ export default function () {
           }></Button>
       </View>
     </View>
-  );
+  )
 }

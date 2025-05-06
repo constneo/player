@@ -4,10 +4,10 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import Login from "./Login"
 import { useAuth } from "./Auth"
-import Tabs from "./tabs"
-import { Routes } from "./constants"
+import Tabs from "./Tabs"
+import { Routes } from "./utils/constants"
 import Demo from "./Demo"
-import { StoreProvider } from "./tabs/Player"
+import { StoreProvider } from "./Player"
 import AlbumList from "./AlbumList"
 
 const Stack = createNativeStackNavigator()

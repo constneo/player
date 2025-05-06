@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native"
-import { usePlayerStore } from "./tabs/Player"
+import { usePlayerStore } from "./Player"
 import { Text, Layout } from "@ui-kitten/components"
 
 export default function Demo() {

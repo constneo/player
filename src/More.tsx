@@ -1,12 +1,13 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { Button, Layout, Text } from "@ui-kitten/components"
-import { Routes, RoutesParamList } from "../constants"
+import { Routes, RoutesParamList } from "./utils/constants"
 import Player, { usePlayerStore } from "./Player"
 import { StyleSheet } from "react-native"
-import request from "../api/request"
+import request from "./utils/request"
 import { AxiosResponse } from "axios"
-import { KeepaliveRes } from "../types"
-import { getBaseUrl } from "../storage"
+import { KeepaliveRes } from "./utils/types"
+import { getBaseUrl } from "./utils/storage"
+import { useRef } from "react"
 
 export default () => {
   const navigation = useNavigation<NavigationProp<RoutesParamList>>()
@@ -16,6 +17,8 @@ export default () => {
     <Layout style={styles.container}>
       <Layout style={styles.btns}>
         <Button
+          id="2"
+          nextFocusUp={0}
           onPress={() => {
             navigation.navigate(Routes.AlbumList)
           }}>
@@ -80,7 +83,7 @@ export default () => {
         </Button> */}
       </Layout>
 
-      {/* <Player /> */}
+      {/* <Player id="0" /> */}
     </Layout>
   )
 }

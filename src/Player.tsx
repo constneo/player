@@ -1,10 +1,10 @@
-import { Button, Text } from "@ui-kitten/components"
-import { createContext, useContext, useEffect, useState } from "react"
-import { StyleSheet, View } from "react-native"
+import { Button, ButtonProps, Text } from "@ui-kitten/components"
+import { createContext, JSX, useContext, useEffect, useState } from "react"
+import { Alert, StyleSheet, TouchableOpacity, TVFocusGuideView, View } from "react-native"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { getCurrentSong, setCurrentSong } from "../storage"
+import { getCurrentSong, setCurrentSong } from "./utils/storage"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { Routes, RoutesParamList } from "../constants"
+import { Routes, RoutesParamList } from "./utils/constants"
 
 const StoreContext = createContext({
   current: "",
@@ -51,7 +51,9 @@ export const usePlayerStore = () => useContext(StoreContext)
 <ion-icon name="pause-outline"></ion-icon>
 */
 
-export default () => {
+export default (
+  props: JSX.IntrinsicAttributes & JSX.IntrinsicClassAttributes<Button> & Readonly<ButtonProps>
+) => {
   const { current } = usePlayerStore()
   const navigation = useNavigation<NavigationProp<RoutesParamList>>()
   const [playing, setPlaying] = useState(false)
@@ -62,18 +64,14 @@ export default () => {
         <Ionicons name={"musical-note-outline"} size={24} color={"red"} />
       </View>
 
-      <Button
-        style={{ width: 100, height: "100%", backgroundColor: "transparent", borderWidth: 0 }}
-        nextFocusUp={0}
-        onFocus={() => {
-          console.log("123:", 123)
-        }}
-        onPress={() => {
-          navigation.navigate(Routes.Demo)
-        }}>
-        {/* <Text>{current}</Text> */}
-        {current}
-      </Button>
+      <TVFocusGuideView autoFocus>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(Routes.Demo)
+          }}>
+          <Text>{current}</Text>
+        </TouchableOpacity>
+      </TVFocusGuideView>
 
       <View style={styles.controls}>
         <Ionicons name={"play-back-outline"} size={24} color={"#cccccc"} />
