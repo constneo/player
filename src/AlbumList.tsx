@@ -7,7 +7,7 @@ import { Layout, Spinner, Text } from "@ui-kitten/components"
 import { List, ListItem } from "@ui-kitten/components"
 import { Button, StyleSheet, useTVEventHandler } from "react-native"
 import { RemoteKeys } from ".//utils/constants"
-import { AlbumItem } from ".//utils/types"
+import { AlbumItem } from "types/AlbumItem"
 
 // query:
 // 参数名	备注

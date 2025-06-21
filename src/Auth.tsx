@@ -2,8 +2,8 @@
 import React, { createContext, useEffect, useState, useContext } from "react"
 import { setToken, getToken } from "./utils/storage"
 
-const AuthContext = createContext({
-  isAuth: false,
+export const AuthContext = createContext({
+  isAuth: true,
   login: (token: string) => {},
   logout: () => {}
 })

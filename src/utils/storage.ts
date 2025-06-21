@@ -1,11 +1,12 @@
 import storage from "@react-native-async-storage/async-storage"
-import { UserInfo } from "./types"
+import { UserInfo } from "types/UserInfo"
 
 export const keys = {
   token: "token",
   baseURL: "baseURL",
   userInfo: "userInfo",
-  song: "song"
+  song: "song",
+  theme: "theme"
 }
 
 export const setUserInfo = async (value: UserInfo) => {
@@ -50,3 +51,11 @@ export const setCurrentSong = async (value: string) => {
 }
 
 export const getCurrentSong = async () => await storage.getItem(keys.song)
+
+export const setTheme = async (value: string) => {
+  await storage.setItem(keys.theme, value)
+}
+
+export const getTheme = async (): Promise<string> => {
+  return (await storage.getItem(keys.theme)) || "dark"
+}

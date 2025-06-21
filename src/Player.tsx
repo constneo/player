@@ -1,10 +1,20 @@
-import { Button, ButtonProps, Text } from "@ui-kitten/components"
+import {
+  Avatar,
+  Button,
+  ButtonProps,
+  Divider,
+  Icon,
+  IconElement,
+  Layout,
+  Text
+} from "@ui-kitten/components"
 import { createContext, JSX, useContext, useEffect, useState } from "react"
-import { Alert, StyleSheet, TouchableOpacity, TVFocusGuideView, View } from "react-native"
+import { ImageProps, StyleSheet } from "react-native"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { getCurrentSong, setCurrentSong } from "./utils/storage"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { Routes, RoutesParamList } from "./utils/constants"
+import Focusable from "./Focusable"
 
 const StoreContext = createContext({
   current: "",
@@ -51,6 +61,15 @@ export const usePlayerStore = () => useContext(StoreContext)
 <ion-icon name="pause-outline"></ion-icon>
 */
 
+const ItemImage = (props: ImageProps) => (
+  <Avatar {...props} style={[props.style]} source={require("../assets/icon.png")} />
+)
+
+const LeftPlayIcon = (props: any): IconElement => <Icon {...props} name="rewind-left-outline" />
+const RightPlayIcon = (props: any): IconElement => <Icon {...props} name="rewind-right-outline" />
+const PlayIcon = (props: any): IconElement => <Icon {...props} name="play-circle-outline" />
+const PauseIcon = (props: any): IconElement => <Icon {...props} name="pause-circle-outline" />
+
 export default (
   props: JSX.IntrinsicAttributes & JSX.IntrinsicClassAttributes<Button> & Readonly<ButtonProps>
 ) => {
@@ -59,54 +78,79 @@ export default (
   const [playing, setPlaying] = useState(false)
 
   return (
-    <View style={styles.player}>
-      <View style={styles.img}>
-        <Ionicons name={"musical-note-outline"} size={24} color={"red"} />
-      </View>
+    <Layout style={styles.container}>
+      <Divider />
+      <Layout style={styles.player}>
+        <Layout style={styles.img}>
+          <Focusable>
+            <Ionicons name={"musical-note-outline"} size={24} color={"red"} />
+            {/* <ItemImage /> */}
+          </Focusable>
+        </Layout>
 
-      <TVFocusGuideView autoFocus>
-        <TouchableOpacity
+        <Focusable
           onPress={() => {
             navigation.navigate(Routes.Demo)
           }}>
           <Text>{current}</Text>
-        </TouchableOpacity>
-      </TVFocusGuideView>
+        </Focusable>
 
-      <View style={styles.controls}>
-        <Ionicons name={"play-back-outline"} size={24} color={"#cccccc"} />
-        <View>
-          {playing ? (
-            <Ionicons
-              name={"pause-outline"}
-              size={24}
-              color={"#cccccc"}
-              onPress={() => setPlaying(!playing)}
-            />
-          ) : (
-            <Ionicons
-              name={"play-outline"}
-              size={24}
-              color={"#cccccc"}
-              onPress={() => setPlaying(!playing)}
-            />
-          )}
-        </View>
+        <Layout style={styles.controls}>
+          <Button
+            style={{}}
+            status="danger"
+            size="large"
+            accessoryLeft={LeftPlayIcon}
+            appearance="ghost"
+          />
 
-        <Ionicons name={"play-forward-outline"} size={24} color={"#cccccc"} />
-      </View>
-    </View>
+          <Layout>
+            {playing ? (
+              <Button
+                style={{}}
+                status="danger"
+                size="large"
+                accessoryLeft={PlayIcon}
+                appearance="ghost"
+              />
+            ) : (
+              <Button
+                style={{}}
+                status="danger"
+                size="large"
+                accessoryLeft={PauseIcon}
+                appearance="ghost"
+              />
+            )}
+          </Layout>
+          <Button
+            style={{}}
+            status="danger"
+            size="large"
+            accessoryLeft={RightPlayIcon}
+            appearance="ghost"
+          />
+          {/* <Ionicons name={"play-forward-outline"} size={24} color={"#cccccc"} /> */}
+        </Layout>
+      </Layout>
+    </Layout>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   player: {
+    alignSelf: "flex-end",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#000000",
+    // backgroundColor: "#000000",
     height: 60,
     width: "100%"
+    // borderTopWidth: 1,
+    // borderTopColor: "rgba(0,0,0,0.5)"
   },
   img: {
     width: 40,
@@ -120,8 +164,8 @@ const styles = StyleSheet.create({
   controls: {
     marginRight: 20,
     flexDirection: "row",
-    alignItems: "flex-end",
-    gap: 10
+    alignItems: "flex-end"
+    // gap: 5
     // justifyContent: "flex-end",
     // alignContent: "flex-end"
   }

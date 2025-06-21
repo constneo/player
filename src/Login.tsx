@@ -1,53 +1,55 @@
 import { useNavigation } from "@react-navigation/native"
 import { useStore } from "./Store"
-import { Button, View } from "react-native"
-import BaseText from "./components/BaseText"
+
 import BaseInput from "./components/BaseInput"
 import { setBaseUrl, setToken, setUserInfo } from "./utils/storage"
 import { login } from "./utils/api"
 import { useAuth } from "./Auth"
-import { safePadding } from "./utils/constants"
+import { Routes } from "./utils/constants"
+import { hideSplash } from "react-native-splash-view"
+import { Button, Layout, Text } from "@ui-kitten/components"
 
 export default function () {
   const { address, setAddress, username, setUsername, password, setPassword } = useStore()
 
-  const navigation = useNavigation()
+  const nav = useNavigation()
 
   const { login: authLogin } = useAuth()
 
+  console.log(":", nav.getState())
+
+  hideSplash()
+
   return (
-    <View
+    <Layout
       style={{
-        height: "100%",
         flex: 1,
+        justifyContent: "center",
         alignItems: "center"
       }}>
-      <View
+      <Layout
         style={{
-          padding: safePadding,
-          width: 500
+          alignItems: "flex-start",
+          justifyContent: "center"
         }}>
-        <BaseText>地址</BaseText>
+        <Text>地址</Text>
         <BaseInput
           style={{ height: 40 }}
-          focusable={true}
           placeholder="输入地址"
           onChangeText={text => setAddress(text)}
           defaultValue={address}
         />
 
-        <BaseText>用户名</BaseText>
+        <Text>用户名</Text>
         <BaseInput
-          focusable={true}
           style={{ height: 40 }}
           placeholder="Type here to username."
           onChangeText={text => setUsername(text)}
           defaultValue={username}
         />
 
-        <BaseText>密码</BaseText>
+        <Text>密码</Text>
         <BaseInput
-          focusable={true}
           style={{ height: 40 }}
           placeholder="Type here to password."
           onChangeText={text => setPassword(text)}
@@ -55,8 +57,6 @@ export default function () {
         />
 
         <Button
-          nextFocusDown={0}
-          title={"登录"}
           onPress={async () => {
             try {
               await setBaseUrl(address)
@@ -66,11 +66,14 @@ export default function () {
               await setUserInfo(res.data)
               await setToken(res.data.token)
               authLogin(res.data.token)
+              nav.navigate(Routes.Tabs as never)
             } catch (error) {
               console.log(error)
             }
-          }}></Button>
-      </View>
-    </View>
+          }}>
+          登录
+        </Button>
+      </Layout>
+    </Layout>
   )
 }

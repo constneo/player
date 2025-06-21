@@ -1,11 +1,14 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { StyleSheet, View, Platform, TVFocusGuideView, TouchableOpacity } from "react-native"
-import { RoutesParamList } from ".//utils/constants"
+import { Routes, RoutesParamList } from ".//utils/constants"
 import { useAuth } from "./Auth"
 import Player, { usePlayerStore } from "./Player"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { Button, Text } from "@ui-kitten/components"
+import { Button, Layout, Text } from "@ui-kitten/components"
 import { useRef } from "react"
+import Songs from "./Songs"
+import Page from "./Page"
+import FocusExample from "./FocusExample"
 
 const { Navigator, Screen } = createNativeStackNavigator()
 
@@ -23,26 +26,39 @@ const A = () => {
 }
 const B = () => {
   return (
-    <TVFocusGuideView autoFocus>
-      <Text>This is hero Image</Text>
-      <TouchableOpacity>
-        <Text>Play Now</Text>
-      </TouchableOpacity>
-    </TVFocusGuideView>
+    <Layout>
+      <TVFocusGuideView autoFocus>
+        <Text>This is hero Image</Text>
+        <TouchableOpacity>
+          <Text>Play Now</Text>
+        </TouchableOpacity>
+      </TVFocusGuideView>
+    </Layout>
   )
 }
-const C = () => <Text>ccc</Text>
 
 export default function () {
-  const navigation = useNavigation<NavigationProp<RoutesParamList>>()
-  const { logout } = useAuth()
-  const { current, setCurrent } = usePlayerStore()
-
   return (
-    <View style={styles.container}>
-      {/* <View style={styles.btns}></View> */}
-
-      <Navigator>
+    <Layout style={styles.container}>
+      <Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
+        {/* <Screen name="B" component={FocusExample} /> */}
+        {/* <Screen
+          name="Page"
+          component={Page}
+          options={{
+            title: "音乐"
+          }}
+        /> */}
+        <Screen
+          name="Songs"
+          component={Songs}
+          options={{
+            title: "音乐"
+          }}
+        />
         <Screen
           name="A"
           component={A}
@@ -50,11 +66,8 @@ export default function () {
             title: "Home"
           }}
         />
-        <Screen name="b" component={B} />
-        <Screen name="c" component={C} />
       </Navigator>
-      {/* <Player id="10" nextFocusUp={101} focusable={true} /> */}
-    </View>
+    </Layout>
   )
 }
 

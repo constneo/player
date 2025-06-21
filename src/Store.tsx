@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { UserInfo } from "./utils/types"
+import { UserInfo } from "types/UserInfo"
 
 export const StoreContext = createContext({
   address: "http://navidrome.lan",

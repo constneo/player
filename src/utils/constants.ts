@@ -32,7 +32,9 @@ export enum Routes {
   Demo = "Demo",
   Login = "Login",
   AlbumList = "AlbumList",
-  More = "More"
+  Zero = "Zero",
+  More = "More",
+  Tabs = "Tabs"
 }
 
 export type RoutesParamList = {
@@ -41,4 +43,5 @@ export type RoutesParamList = {
   [Routes.Demo]: undefined // 无参数
   [Routes.AlbumList]: undefined // 无参数
   [Routes.More]: undefined // 无参数
+  [Routes.Zero]: undefined // 无参数
 }
